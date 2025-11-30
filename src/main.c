@@ -16,9 +16,8 @@ int main(int argc, char* argv[]) {
     }
 
     printf("Image loaded successfully!\n");
-    printf("width: %d\n", image->width);
-    printf("height: %d\n", image->height);
-    printf("channels: %d\n", image->channels);
+    print_image_info(image);
+    print_image(image);
 
     // Free the image memory
     close_image(image);

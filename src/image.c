@@ -33,3 +33,19 @@ void close_image(Image* image) {
     stbi_image_free(image->data);
     free(image);
 }
+
+void print_image_info(Image* image) {
+    printf("Image Info:\n");
+    printf("Width: %d\n", image->width);
+    printf("Height: %d\n", image->height);
+    printf("Channels: %d\n", image->channels);
+}
+
+void print_image(Image* image) {
+    for (int y = 0; y < image->height; y++) {
+        for (int x = 0; x < image->width; x++) {
+            printf("%u ", image->data[y * image->width * image->channels + x * image->channels]);
+        }
+        printf("\n");
+    }
+}

@@ -9,3 +9,6 @@ typedef struct {
 
 Image* open_image(const char* filename, int desired_channels);
 void close_image(Image* image);
+
+void print_image(Image* image);
+void print_image_info(Image* image);
