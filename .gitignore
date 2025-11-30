@@ -1,0 +1,6 @@
+.cache
+*.o
+
+compile_commands.json
+
+LineVision
