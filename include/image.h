@@ -7,5 +7,5 @@ typedef struct {
     unsigned char* data;
 } Image;
 
-Image* open_image(const char* filename);
+Image* open_image(const char* filename, int desired_channels);
 void close_image(Image* image);

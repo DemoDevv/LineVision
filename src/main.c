@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
 
     char* image_file = argv[1];
 
-    Image* image = open_image(image_file);
+    Image* image = open_image(image_file, 1);
     if (!image) {
         printf("Failed to load image file: %s\n", image_file);
         return 1;

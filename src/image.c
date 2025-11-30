@@ -4,19 +4,23 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Image* open_image(const char* filename) {
+Image* open_image(const char* filename, int desired_channels) {
     Image* image = malloc(sizeof(Image));
     if (!image)
         return NULL;
 
     int width, height, channels;
-    unsigned char* data = stbi_load(filename, &width, &height, &channels, 1);
+    unsigned char* data = stbi_load(filename, &width, &height, &channels, desired_channels);
     if (!data)
         return NULL;
 
     image->width = width;
     image->height = height;
-    image->channels = channels;
+    if (desired_channels > 0) {
+        image->channels = desired_channels;
+    } else {
+        image->channels = channels;
+    }
     image->data = data;
 
     return image;
