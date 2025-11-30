@@ -6,4 +6,8 @@ I Use for now the external library stb_image.h for image loading.
 
 [ ] - decode EAN-8  
 [ ] - decode EAN-13  
-[ ] - decode UPC-A
+[ ] - decode UPC-A  
+
+Specs:  
+EAN-8 - http://www.gomaro.ch/Specifications/EAN8.htm
+EAN-13 - http://www.gomaro.ch/Specifications/EAN13.htm
