@@ -67,15 +67,17 @@ int otsu_threshold(const uint8_t* gray, int length) {
         sum_total += i * histogram[i];
     }
 
-    int wB = 0, wF = 0;
+    int wB = 0;
     double sumB = 0.0, meanB, meanF, maxInterVar = 0.0;
+
+    int best_threshold = 0;
 
     for (int i = 0; i < 256; i++) {
         // no need to use probability here, just pixels number
         wB += histogram[i];
         if (wB == 0) continue;
 
-        wF = length - wB;
+        int wF = length - wB;
         if (wF == 0) break;
 
         sumB += i * histogram[i];
@@ -90,10 +92,11 @@ int otsu_threshold(const uint8_t* gray, int length) {
 
         if (var > maxInterVar) {
             maxInterVar = var;
+            best_threshold = i;
         }
     }
 
-    return maxInterVar;
+    return best_threshold;
 }
 
 void binarization(Image* image, int threshold) {
