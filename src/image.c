@@ -52,3 +52,54 @@ void print_image(Image* image) {
         printf("\n");
     }
 }
+
+// find the best threshold for binarization
+int otsu_threshold(const uint8_t* gray, int length) {
+    int histogram[256] = {0};
+
+    // compute grey scale histogram
+    for (int i = 0; i < length; i++) {
+        histogram[gray[i]]++;
+    }
+
+    long sum_total = 0;
+    for (int i = 0; i < 256; i++) {
+        sum_total += i * histogram[i];
+    }
+
+    int wB = 0, wF = 0;
+    double sumB = 0.0, meanB, meanF, maxInterVar = 0.0;
+
+    for (int i = 0; i < 256; i++) {
+        // no need to use probability here, just pixels number
+        wB += histogram[i];
+        if (wB == 0) continue;
+
+        wF = length - wB;
+        if (wF == 0) break;
+
+        sumB += i * histogram[i];
+
+        meanB = sumB / wB;
+        // we can find sumF by subtracting sumB from sum_total
+        double sumF = sum_total - sumB;
+        meanF = sumF / wF;
+
+        // calculate inter-class variance
+        double var = wB * wF * (meanB - meanF) * (meanB - meanF);
+
+        if (var > maxInterVar) {
+            maxInterVar = var;
+        }
+    }
+
+    return maxInterVar;
+}
+
+void binarization(Image* image, int threshold) {
+    if (!image) return;
+
+    for (int i = 0; i < image->width * image->height * image->channels; i++) {
+        image->data[i] = image->data[i] > threshold ? 255 : 0;
+    }
+}

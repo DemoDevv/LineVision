@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 typedef struct {
     int width;
@@ -12,3 +13,6 @@ void close_image(Image* image);
 
 void print_image(Image* image);
 void print_image_info(Image* image);
+
+int otsu_threshold(const uint8_t* gray, int length);
+void binarization(Image* image, int threshold);
