@@ -7,6 +7,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+/// Open an image file and return a pointer to the Image struct
 Image* open_image(const char* filename, int desired_channels) {
     Image* image = malloc(sizeof(Image));
     if (!image)
@@ -27,6 +28,7 @@ Image* open_image(const char* filename, int desired_channels) {
     return image;
 }
 
+/// Close the image and free the memory
 void close_image(Image* image) {
     if (!image) return;
 
@@ -34,6 +36,7 @@ void close_image(Image* image) {
     free(image);
 }
 
+/// Print the image information
 void print_image_info(Image* image) {
     if (!image) return;
 
@@ -56,7 +59,7 @@ void print_image(Image* image) {
     }
 }
 
-// find the best threshold for binarization
+/// find the best threshold for binarization
 int otsu_threshold(const uint8_t* gray, int length) {
     int histogram[256] = {0};
 
@@ -102,6 +105,7 @@ int otsu_threshold(const uint8_t* gray, int length) {
     return best_threshold;
 }
 
+/// Binarize the image using the given threshold
 void binarization(Image* image, int threshold) {
     if (!image) return;
 
@@ -110,6 +114,7 @@ void binarization(Image* image, int threshold) {
     }
 }
 
+/// Save the image to a PNG file
 void save_image_png(Image* image, const char* filename) {
     stbi_write_png(filename, image->width, image->height, image->channels, image->data, image->width * image->channels);
 }
