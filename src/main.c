@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "image.h"
+#include "decode.h"
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -23,7 +24,9 @@ int main(int argc, char* argv[]) {
     printf("Threshold: %d\n", threshold);
     binarization(image, threshold);
 
-    save_image_png(image, "images/output.png");
+    // save_image_png(image, "images/output.png");
+    int module = find_module(&image->data[image->width * (image->height / 2)], image->width);
+    printf("Module: %d\n", module);
 
     // Free the image memory
     close_image(image);
