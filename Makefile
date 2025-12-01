@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-Wall -Wextra -O2 -Iinclude -Ilib/stb
 
 # List of source files
-SRC=src/main.c src/image.c src/ean_patterns.c
+SRC=src/main.c src/image.c src/decode.c src/ean_patterns.c
 
 OBJ=$(SRC:.c=.o)
 
