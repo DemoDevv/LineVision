@@ -4,6 +4,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
 Image* open_image(const char* filename, int desired_channels) {
     Image* image = malloc(sizeof(Image));
     if (!image)
@@ -105,4 +108,8 @@ void binarization(Image* image, int threshold) {
     for (int i = 0; i < image->width * image->height * image->channels; i++) {
         image->data[i] = image->data[i] > threshold ? 255 : 0;
     }
+}
+
+void save_image_png(Image* image, const char* filename) {
+    stbi_write_png(filename, image->width, image->height, image->channels, image->data, image->width * image->channels);
 }

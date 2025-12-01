@@ -17,7 +17,13 @@ int main(int argc, char* argv[]) {
 
     printf("Image loaded successfully!\n");
     print_image_info(image);
-    print_image(image);
+    // print_image(image);
+
+    int threshold = otsu_threshold(image->data, image->height * image->width);
+    printf("Threshold: %d\n", threshold);
+    binarization(image, threshold);
+
+    save_image_png(image, "images/output.png");
 
     // Free the image memory
     close_image(image);

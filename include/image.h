@@ -16,3 +16,5 @@ void print_image_info(Image* image);
 
 int otsu_threshold(const uint8_t* gray, int length);
 void binarization(Image* image, int threshold);
+
+void save_image_png(Image* image, const char* filename);
