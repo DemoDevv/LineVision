@@ -116,5 +116,7 @@ void binarization(Image* image, int threshold) {
 
 /// Save the image to a PNG file
 void save_image_png(Image* image, const char* filename) {
+    if (!image) return;
+
     stbi_write_png(filename, image->width, image->height, image->channels, image->data, image->width * image->channels);
 }
