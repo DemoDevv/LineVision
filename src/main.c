@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "image.h"
 #include "decode.h"
+#include "ean_patterns.h"
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -25,8 +28,23 @@ int main(int argc, char* argv[]) {
     binarization(image, threshold);
 
     // save_image_png(image, "images/output.png");
-    int module = find_module(&image->data[image->width * (image->height / 2)], image->width);
+
+    uint8_t* middle_segment = &image->data[image->width * (image->height / 2)];
+    int module = find_module(middle_segment, image->width);
     printf("Module: %d\n", module);
+
+    SegmentEAN* segment = create_segment_ean(middle_segment, image->width, module);
+
+    print_segment_ean(segment);
+    printf("Segment start: %lu\n", segment->start);
+    printf("Segment middle: %lu\n", segment->middle);
+    printf("Segment end: %lu\n", segment->end);
+
+    // decode CAB
+    int* cab = decode_ean8(segment);
+    free(cab);
+
+    destroy_segment_ean(segment);
 
     // Free the image memory
     close_image(image);
