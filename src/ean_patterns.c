@@ -4,14 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Size of an EAN-8
 const size_t EAN8_LENGTH = 67;
-// Size of an EAN-8 part (Left and Right)
 const size_t EAN8_SET_LENGTH = 28;
-// Size of an EAN-8 code (Left and Right)
 const size_t EAN8_CODE_LENGTH = 7;
 
-// Coding Table for EAN-8 (Set A)
 const int L_CODE[10] = {
   0b0001101,
   0b0011001,
@@ -25,7 +21,6 @@ const int L_CODE[10] = {
   0b0001011,
 };
 
-// Coding Table for EAN-8 (Set B)
 const int R_CODE[10] = {
   0b1110010,
   0b1100110,

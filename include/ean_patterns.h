@@ -18,11 +18,16 @@ typedef struct {
     uint8_t* data;
 } SegmentEAN;
 
+// Size of an EAN-8
 extern const size_t EAN8_LENGTH;
+// Size of an EAN-8 part (Left and Right)
 extern const size_t EAN8_SET_LENGTH;
+// Size of an EAN-8 code (Left and Right)
 extern const size_t EAN8_CODE_LENGTH;
 
+// Coding Table for EAN-8 (Set A)
 extern const int L_CODE[10];
+// Coding Table for EAN-8 (Set B)
 extern const int R_CODE[10];
 
 SegmentEAN* create_segment_ean(const uint8_t* data, size_t length, int module);
