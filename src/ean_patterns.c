@@ -73,34 +73,6 @@ SegmentEAN* create_segment_ean(const uint8_t* data, size_t length, int module) {
     return segment;
 }
 
-/**
- * Validate the structural layout of an EAN-8 barcode.
- *
- * This function verifies whether `data[index ... index + EAN8_LENGTH]`
- * matches the mandatory EAN-8 guard patterns and bit layout.
- *
- * The EAN-8 format is defined as:
- *
- *   Start guard  : 101        (3 bits)
- *   Left digits  : 4 × 7 bits = 28 bits
- *   Middle guard : 01010      (5 bits)
- *   Right digits : 4 × 7 bits = 28 bits
- *   End guard    : 101        (3 bits)
- *
- * Total length: 67 bits.
- *
- * It is assumed that `data` has already been:
- *   - binarized,
- *   - resampled to one bit per module,
- *   - oriented horizontally.
- *
- * @param data   Pointer to the binary bitstream (values 0 or 1 only).
- * @param length Length of the bitstream in bits.
- * @param index  Starting position where the EAN-8 structure is expected.
- *
- * @return `true` if the start guard, middle guard, and end guard
- *         are present at the expected locations; otherwise `false`.
- */
 bool is_valid_structure(const uint8_t* data, size_t length, size_t index) {
     if (index + EAN8_LENGTH > length) return false;
 
