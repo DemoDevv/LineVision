@@ -41,6 +41,11 @@ int main(int argc, char* argv[]) {
 
     // decode CAB
     int* cab = decode_ean8(segment);
+
+    for (int i = 0; i < 8; i++) {
+        printf("CAB[%d]: %d\n", i, cab[i]);
+    }
+
     free(cab);
 
     destroy_segment_ean(segment);

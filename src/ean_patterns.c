@@ -1,5 +1,6 @@
 #include "ean_patterns.h"
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -140,11 +141,37 @@ void print_segment_ean(SegmentEAN* segment) {
     printf("\n");
 }
 
+int decode_code_ean8(const uint8_t* data, const int codes[10]) {
+    int value = 0;
+    for (size_t i = 0; i < EAN8_CODE_LENGTH; i++) {
+        value = (value << 1) | (data[i]);
+    }
+
+    for (int i = 0; i < 10; i++) {
+        if (value == codes[i]) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 int* decode_left_set_ean8(const SegmentEAN* segment) {
     if (!segment) return NULL;
 
     int* result = malloc(4 * sizeof(int));
     if (!result) return NULL;
+
+    for (int i = 0; i < 4; i++) {
+        int value = decode_code_ean8(&segment->data[segment->start + 3 + i * EAN8_CODE_LENGTH], L_CODE);
+
+        if (value == -1) {
+            free(result);
+            return NULL;
+        }
+
+        result[i] = value;
+    }
 
     return result;
 }
@@ -154,6 +181,17 @@ int* decode_right_set_ean8(const SegmentEAN* segment) {
 
     int* result = malloc(4 * sizeof(int));
     if (!result) return NULL;
+
+    for (int i = 0; i < 4; i++) {
+        int value = decode_code_ean8(&segment->data[segment->middle + 5 + i * EAN8_CODE_LENGTH], R_CODE);
+
+        if (value == -1) {
+            free(result);
+            return NULL;
+        }
+
+        result[i] = value;
+    }
 
     return result;
 }

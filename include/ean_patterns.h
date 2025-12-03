@@ -34,6 +34,7 @@ bool is_valid_structure(const uint8_t* data, size_t length, size_t index);
 
 int compute_check_digit(const SegmentEAN* segment);
 
+int decode_code_ean8(const uint8_t* data, const int codes[10]);
 int* decode_left_set_ean8(const SegmentEAN* segment);
 int* decode_right_set_ean8(const SegmentEAN* segment);
 int* decode_ean8(const SegmentEAN* segment);
