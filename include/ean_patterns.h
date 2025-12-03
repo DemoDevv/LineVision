@@ -20,6 +20,7 @@ typedef struct {
 
 extern const size_t EAN8_LENGTH;
 extern const size_t EAN8_SET_LENGTH;
+extern const size_t EAN8_CODE_LENGTH;
 
 extern const int L_CODE[10];
 extern const int R_CODE[10];

@@ -21,13 +21,12 @@ int main(int argc, char* argv[]) {
 
     printf("Image loaded successfully!\n");
     print_image_info(image);
-    // print_image(image);
 
+    // binarization
     int threshold = otsu_threshold(image->data, image->height * image->width);
     printf("Threshold: %d\n", threshold);
     binarization(image, threshold);
 
-    // save_image_png(image, "images/output.png");
 
     uint8_t* middle_segment = &image->data[image->width * (image->height / 2)];
     int module = find_module(middle_segment, image->width);
@@ -45,6 +44,8 @@ int main(int argc, char* argv[]) {
     free(cab);
 
     destroy_segment_ean(segment);
+
+    // save_image_png(image, "images/output.png");
 
     // Free the image memory
     close_image(image);
