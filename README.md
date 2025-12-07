@@ -5,9 +5,11 @@ This project uses make with gcc.
 I Use for now the external library stb_image.h for image loading.
 
 [X] - decode EAN-8  
-[ ] - check the check number of EAN-8
+[ ] - check the check number of EAN-8  
 [ ] - decode EAN-13  
 [ ] - decode UPC-A  
+
+[ ] - add automated tests
 
 Specs:  
 EAN-8 - http://www.gomaro.ch/Specifications/EAN8.htm
