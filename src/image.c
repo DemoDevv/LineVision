@@ -7,7 +7,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
-/// Open an image file and return a pointer to the Image struct
 Image* open_image(const char* filename, int desired_channels) {
     Image* image = malloc(sizeof(Image));
     if (!image)
@@ -65,7 +64,7 @@ int otsu_threshold(const uint8_t* gray, int length) {
         histogram[gray[i]]++;
     }
 
-    long sum_total = 0;
+    long long sum_total = 0;
     for (int i = 0; i < 256; i++) {
         sum_total += i * histogram[i];
     }
@@ -104,6 +103,11 @@ int otsu_threshold(const uint8_t* gray, int length) {
 
 void binarization(Image* image, int threshold) {
     if (!image) return;
+
+    if (image->channels != 1) {
+        fprintf(stderr, "binarization: image must be grayscale\n");
+        return;
+    }
 
     for (int i = 0; i < image->width * image->height * image->channels; i++) {
         image->data[i] = image->data[i] > threshold ? 255 : 0;
