@@ -34,7 +34,7 @@ const int R_CODE[10] = {
   0b1110100,
 };
 
-SegmentEAN* create_segment_ean(const uint8_t* data, size_t length, int module) {
+SegmentEAN* create_segment_ean(const uint8_t* data, size_t length, size_t module) {
     SegmentEAN* segment = malloc(sizeof(SegmentEAN));
     if (!segment) return NULL;
 
@@ -47,6 +47,7 @@ SegmentEAN* create_segment_ean(const uint8_t* data, size_t length, int module) {
 
     segment->length = n_modules;
 
+    // binarization of grayscale pixels (white = 0 and black = 1)
     for (size_t i = 0; i < n_modules; i++) {
         segment->data[i] = data[i * module] == 0 ? 1 : 0;
     }
@@ -55,14 +56,23 @@ SegmentEAN* create_segment_ean(const uint8_t* data, size_t length, int module) {
     segment->middle = 0;
     segment->end = 0;
 
+    bool is_valid = false;
+
     // find the EAN structure
     for (size_t i = 0; i < segment->length; i++) {
         if (is_valid_structure(segment->data, segment->length, i)) {
+            is_valid = true;
             segment->start = i;
             segment->middle = i + 3 + EAN8_SET_LENGTH;
             segment->end = i + 3 + 5 + EAN8_SET_LENGTH * 2;
             break;
         }
+    }
+
+    if (!is_valid) {
+        free(segment->data);
+        free(segment);
+        return NULL;
     }
 
     return segment;
