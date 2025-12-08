@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -29,8 +30,8 @@ int main(int argc, char* argv[]) {
 
 
     uint8_t* middle_segment = &image->data[image->width * (image->height / 2)];
-    int module = find_module(middle_segment, image->width);
-    printf("Module: %d\n", module);
+    size_t module = find_module(middle_segment, image->width);
+    printf("Module: %lu\n", module);
 
     SegmentEAN* segment = create_segment_ean(middle_segment, image->width, module);
 
