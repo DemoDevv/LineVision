@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+const size_t EAN8_DIGITS = 8;
+const size_t EAN13_DIGITS = 13;
+
 const size_t EAN8_LENGTH = 67;
 const size_t EAN8_SET_LENGTH = 28;
 const size_t EAN8_CODE_LENGTH = 7;

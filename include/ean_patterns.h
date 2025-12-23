@@ -52,6 +52,9 @@ typedef struct {
     uint8_t* data;
 } SegmentEAN;
 
+extern const size_t EAN8_DIGITS;
+extern const size_t EAN13_DIGITS;
+
 /** @brief Total length of an EAN-8 barcode in modules */
 extern const size_t EAN8_LENGTH;
 /** @brief Length of a set of 4 encoded digits (4 × 7 modules) */
