@@ -103,6 +103,7 @@ extern const int R_CODE[10];
  *       start, middle, and end guard positions
  */
 SegmentEAN* create_segment_ean(const uint8_t* data, size_t length, size_t module);
+
 /**
  * @brief Frees the memory allocated for an EAN segment
  *
@@ -151,7 +152,7 @@ void print_segment_ean(SegmentEAN* segment);
  */
 bool is_valid_structure(const uint8_t* data, size_t length, size_t index);
 
-int compute_check_digit(const SegmentEAN* segment);
+int compute_check_digit(const int* segment, const size_t size);
 
 /**
  * @brief Decodes an individual 7-bit code

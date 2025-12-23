@@ -199,3 +199,15 @@ int* decode_ean8(const SegmentEAN* segment) {
 
     return result;
 }
+
+int compute_check_digit(const int* segment, const size_t size) {
+    int sum = 0;
+
+    for (size_t i = 0; i < size - 1; i++) {
+        sum += (i % 2 == 0) ? segment[i] * 3 : segment[i];
+    }
+
+    int check_digit = 10 - sum % 10;
+
+    return check_digit == 10 ? 0 : check_digit;
+}

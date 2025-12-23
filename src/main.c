@@ -47,6 +47,10 @@ int main(int argc, char* argv[]) {
         printf("CAB[%d]: %d\n", i, cab[i]);
     }
 
+    int check_digit = compute_check_digit(cab, 8);
+
+    printf("Check digit: %d\n", check_digit);
+
     free(cab);
 
     destroy_segment_ean(segment);
