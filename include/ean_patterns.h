@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "ean_errors.h"
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -197,20 +198,25 @@ int* decode_left_set_ean8(const SegmentEAN* segment);
 int* decode_right_set_ean8(const SegmentEAN* segment);
 
 /**
- * @brief Decodes a complete EAN-8 barcode
+ * @brief Decodes a complete EAN-8 barcode from a given segment.
  *
- * This main function decodes all 8 digits of an EAN-8 barcode by successively
- * calling decode_left_set_ean8 and decode_right_set_ean8.
+ * This function decodes all 8 digits of an EAN-8 barcode by processing the
+ * Left-hand side and Right-hand side sets. It validates the structural
+ * integrity and the check digit (checksum).
  *
- * @param segment Pointer to the EAN segment to decode
+ * @param[in]  segment Pointer to the EAN segment to decode.
+ * @param[out] perror  Pointer to an EAN8Error variable where the error code
+ * will be stored. If successful, it is set to EAN8_ERROR_NONE.
+ * This parameter can be checked to distinguish between
+ * memory allocation issues and invalid barcode data.
  *
- * @return Dynamically allocated array of 8 integers containing all decoded digits
- *         (4 from L-set followed by 4 from R-set), or NULL if failure occurs
+ * @return A dynamically allocated array of 8 integers containing the decoded digits
+ * (4 from L-set followed by 4 from R-set).
+ * Returns NULL if decoding fails or if a memory allocation error occurs.
  *
- * @note Returned memory must be freed by the caller with free()
- * @note This function automatically frees temporary memory used for
- *       left and right sets
- *
- * @warning Does not validate the EAN-8 checksum, only performs raw decoding
+ * @note The caller is responsible for freeing the returned memory using free().
+ * @note If the function returns NULL, the specific reason is stored in perror.
+ * * @warning If EAN8_ERROR_INVALID_CHECKSUM occurs, the function currently updates
+ * perror but still returns the allocated digits.
  */
-int* decode_ean8(const SegmentEAN* segment);
+int* decode_ean8(const SegmentEAN* segment, EAN8Error* perror);

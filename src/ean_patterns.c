@@ -1,4 +1,5 @@
 #include "ean_patterns.h"
+#include "ean_errors.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,6 +122,18 @@ void print_segment_ean(SegmentEAN* segment) {
     printf("\n");
 }
 
+int compute_check_digit(const int* segment, const size_t size) {
+    int sum = 0;
+
+    for (size_t i = 0; i < size - 1; i++) {
+        sum += (i % 2 == 0) ? segment[i] * 3 : segment[i];
+    }
+
+    int check_digit = 10 - sum % 10;
+
+    return check_digit == 10 ? 0 : check_digit;
+}
+
 int decode_code_ean8(const uint8_t* data, const int codes[10]) {
     int value = 0;
     for (size_t i = 0; i < EAN8_CODE_LENGTH; i++) {
@@ -176,41 +189,40 @@ int* decode_right_set_ean8(const SegmentEAN* segment) {
     return result;
 }
 
-int* decode_ean8(const SegmentEAN* segment) {
+int* decode_ean8(const SegmentEAN* segment, EAN8Error* perror) { // TODO: update the doc with perror and each error codes
+    if (perror) *perror = EAN8_ERROR_NONE;
     if (!segment) return NULL;
 
-    int* result = malloc(8 * sizeof(int));
-    if (!result) return NULL;
+    int* result = malloc(EAN8_DIGITS * sizeof(int));
+    if (!result) {
+        if (perror) *perror = EAN8_ERROR_MEMORY_ALLOCATION;
+        return NULL;
+    }
 
     int* left_set = decode_left_set_ean8(segment);
     if (!left_set) {
         free(result);
+        if (perror) *perror = EAN8_ERROR_INVALID_DECODE;
         return NULL;
     }
 
     int* right_set = decode_right_set_ean8(segment);
     if (!right_set) {
         free(result);
+        free(left_set);
+        if (perror) *perror = EAN8_ERROR_INVALID_DECODE;
         return NULL;
     }
 
     memcpy(result, left_set, 4 * sizeof(int));
     memcpy(result + 4, right_set, 4 * sizeof(int));
 
+    int check_digit = compute_check_digit(result, EAN8_DIGITS);
+
+    if (check_digit != result[7]) if (perror) *perror = EAN8_ERROR_INVALID_CHECKSUM;
+
     free(left_set);
     free(right_set);
 
     return result;
-}
-
-int compute_check_digit(const int* segment, const size_t size) {
-    int sum = 0;
-
-    for (size_t i = 0; i < size - 1; i++) {
-        sum += (i % 2 == 0) ? segment[i] * 3 : segment[i];
-    }
-
-    int check_digit = 10 - sum % 10;
-
-    return check_digit == 10 ? 0 : check_digit;
 }

@@ -5,6 +5,7 @@
 #include "image.h"
 #include "decode.h"
 #include "ean_patterns.h"
+#include "ean_errors.h"
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -41,23 +42,18 @@ int main(int argc, char* argv[]) {
     printf("Segment end: %lu\n", segment->end);
 
     // decode CAB
-    int* cab = decode_ean8(segment);
+    EAN8Error error_decode;
+    int* cab = decode_ean8(segment, &error_decode);
 
     for (int i = 0; i < 8; i++) {
         printf("CAB[%d]: %d\n", i, cab[i]);
     }
 
-    int check_digit = compute_check_digit(cab, EAN8_DIGITS);
+    printf("Error result for decode: %s\n", ean8_error_to_string(error_decode));
 
-    printf("Check digit: %d\n", check_digit);
-
+    // free section
     free(cab);
-
     destroy_segment_ean(segment);
-
-    // save_image_png(image, "images/output.png");
-
-    // Free the image memory
     close_image(image);
 
     return 0;
